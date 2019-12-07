@@ -4,7 +4,7 @@ import de.djgames.jonas.adventofcode.Day;
 
 import java.util.Arrays;
 
-import static de.djgames.jonas.adventofcode.aoc2019.Day2019_5.runOpcode;
+import static de.djgames.jonas.adventofcode.aoc2019.Day2019_5.runOpcodeLegacy;
 
 public class Day2019_2 extends Day {
     @Override
@@ -13,7 +13,7 @@ public class Day2019_2 extends Day {
         instrs[1] = 12;
         instrs[2] = 2;
 
-        return String.format("%d", runOpcode(instrs, 0, 0));
+        return String.format("%d", runOpcodeLegacy(instrs, 0, 0));
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Day2019_2 extends Day {
                 int[] instrs = Arrays.stream(input.split("\n")[0].split(",")).mapToInt(Integer::parseInt).toArray();
                 instrs[1] = noun;
                 instrs[2] = verb;
-                if (runOpcode(instrs, 0, 0) == Integer.parseInt(input.split("\n")[1]))
+                if (runOpcodeLegacy(instrs, 0, 0) == Integer.parseInt(input.split("\n")[1]))
                     return String.format("%d", 100 * noun + verb);
             }
         }

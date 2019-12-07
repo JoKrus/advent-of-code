@@ -11,22 +11,23 @@ public class Day2019_5 extends Day {
     public String part1Logic() {
         int[] instrs = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).toArray();
 
-        return String.format("%d", runOpcode(instrs, 1, -1));
+        return String.format("%d", runOpcodeLegacy(instrs, -1, 1));
     }
 
     @Override
     public String part2Logic() {
         int[] instrs = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).toArray();
 
-        return String.format("%d", runOpcode(instrs, 5, -1));
+        return String.format("%d", runOpcodeLegacy(instrs, -1, 5));
     }
 
-    static int runOpcode(int[] instrs, int progInput, int progOutputAddress) {
+    static int runOpcodeLegacy(int[] instrs, int progOutputAddress, int... progInput) {
         Function<Integer, Integer> firstPMode = opCodeEntry -> (opCodeEntry / 100) % 10;
-        Function<Integer, Integer> secondPMode = opCodeEntry -> (opCodeEntry / 1000);
+        Function<Integer, Integer> secondPMode = opCodeEntry -> (opCodeEntry / 1000) % 10;
         BiFunction<Integer, Integer, Integer> value = (mode, val) -> mode != 0 ? val : instrs[val];
         int ret = 0;
         int i = 0;
+        int inpI = 0;
         while (i < instrs.length && instrs[i] != 99) {
             switch (instrs[i] % 100) {
                 case 1:
@@ -42,7 +43,7 @@ public class Day2019_5 extends Day {
                     i += 4;
                     break;
                 case 3:
-                    instrs[instrs[i + 1]] = progInput;
+                    instrs[instrs[i + 1]] = progInput[inpI++];
                     i += 2;
                     break;
                 case 4:
@@ -75,5 +76,4 @@ public class Day2019_5 extends Day {
         }
         return progOutputAddress < 0 ? ret : instrs[progOutputAddress];
     }
-
 }

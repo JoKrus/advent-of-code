@@ -21,18 +21,21 @@ public class Day2019_6 extends Day {
     public String part2Logic() {
         Triple<Node, List<Node>, Map<String, List<String>>> triple = getThings();
 
-        Node you = triple.getMiddle().stream().filter(node -> node.self.equals("YOU")).findFirst().get();
-        Node san = triple.getMiddle().stream().filter(node -> node.self.equals("SAN")).findFirst().get();
+        Node you = triple.getMiddle().stream().filter(node -> node.self.equals("YOU")).findFirst().orElse(null);
+        Node san = triple.getMiddle().stream().filter(node -> node.self.equals("SAN")).findFirst().orElse(null);
+
 
         int dist = 0;
-        while (!you.parent.equals(san.parent)) {
-            Node n;
-            if ((n = you.parent.deepContains(san)) != null) {
-                you.moveNodeToChild(n);
-            } else {
-                you.moveNodeToParent();
+        if (you != null && san != null) {
+            while (!you.parent.equals(san.parent)) {
+                Node n;
+                if ((n = you.parent.deepContains(san)) != null) {
+                    you.moveNodeToChild(n);
+                } else {
+                    you.moveNodeToParent();
+                }
+                dist++;
             }
-            dist++;
         }
 
         return String.format("%d", dist);
@@ -42,8 +45,8 @@ public class Day2019_6 extends Day {
         String[] orbitList = input.split("\n");
         Map<String, List<String>> orbitter = new HashMap<>();
 
-        for (int i = 0; i < orbitList.length; i++) {
-            String[] arg = orbitList[i].split(Pattern.quote(")"));
+        for (String s : orbitList) {
+            String[] arg = s.split(Pattern.quote(")"));
             List<String> vals = orbitter.getOrDefault(arg[0], new ArrayList<>());
             vals.add(arg[1]);
             orbitter.put(arg[0], vals);
@@ -94,7 +97,6 @@ public class Day2019_6 extends Day {
         }
 
         private Node deepContains(Node n) {
-            Node ret = null;
             if (childs.contains(n)) {
                 return this;
             } else if (!this.childs.isEmpty()) {
@@ -105,7 +107,7 @@ public class Day2019_6 extends Day {
                         return start;
                 }
             }
-            return ret;
+            return null;
         }
 
         private void deepContains(Node n, boolean[] found) {

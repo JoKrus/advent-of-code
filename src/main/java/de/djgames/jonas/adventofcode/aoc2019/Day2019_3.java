@@ -62,8 +62,7 @@ public class Day2019_3 extends Day {
             }
         }
 
-
-        return String.format("%d", intersections.values().stream().mapToInt(Integer::intValue).min().getAsInt());
+        return String.format("%d", intersections.values().stream().mapToInt(Integer::intValue).min().orElse(-1));
     }
 
     private static class Pos {

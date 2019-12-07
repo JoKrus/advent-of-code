@@ -17,8 +17,21 @@ public abstract class Day {
         }
     }
 
-    public String execute() {
-        return getClass().getSimpleName() + ": " + part1() + ", " + part2();
+    public final String execute() {
+        String base = getClass().getSimpleName() + ": ";
+        String part1 = "FAILED";
+        try {
+            part1 = part1();
+        } catch (Exception e) {
+
+        }
+        String part2 = "FAILED";
+        try {
+            part2 = part2();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return base + part1 + ", " + part2;
     }
 
     public final String part1() {

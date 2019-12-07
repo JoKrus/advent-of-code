@@ -31,7 +31,7 @@ public class Day2019_4 extends Day {
                 occurences.put(c, occurences.getOrDefault(c, 0) + 1);
             }
 
-            return part1 ? occurences.values().stream().mapToInt(Integer::intValue).max().getAsInt() >= 2 : occurences.containsValue(2);
+            return part1 ? occurences.values().stream().mapToInt(Integer::intValue).max().orElse(0) >= 2 : occurences.containsValue(2);
         }).count());
     }
 }
