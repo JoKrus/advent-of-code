@@ -42,9 +42,7 @@ public class Day2019_7 extends Day {
             }
             Queue<Opcoder> opcoderQ = new ArrayDeque<>(opcoderList);
             Queue<Integer> transfer = new ArrayDeque<>(Collections.singleton(0));
-            int iters = -1;
-            while (!opcoderQ.isEmpty() && iters < 50) {
-                iters++;
+            while (!opcoderQ.isEmpty()) {
                 Opcoder opcoder = opcoderQ.poll();
                 opcoder.addInput(transfer);
                 opcoder.runOpcode();

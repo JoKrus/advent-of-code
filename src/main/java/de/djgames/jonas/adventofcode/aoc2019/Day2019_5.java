@@ -8,16 +8,16 @@ import java.util.Arrays;
 public class Day2019_5 extends Day {
     @Override
     public String part1Logic() {
-        int[] instrs = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).toArray();
+        int[] instructions = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).toArray();
 
-        return String.format("%d", Opcoder.runOpcodeLegacy(instrs, -1, 1));
+        return String.format("%d", Opcoder.runOpcodeLegacy(instructions, -1, 1));
     }
 
     @Override
     public String part2Logic() {
-        int[] instrs = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).toArray();
+        int[] instructions = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).toArray();
 
-        return String.format("%d", Opcoder.runOpcodeLegacy(instrs, -1, 5));
+        return String.format("%d", Opcoder.runOpcodeLegacy(instructions, -1, 5));
     }
 
 }

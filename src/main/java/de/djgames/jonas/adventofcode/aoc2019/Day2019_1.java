@@ -26,7 +26,6 @@ public class Day2019_1 extends Day {
     }
 
     private IntStream getStream() {
-
         return Arrays.stream(input.split("\n")).mapToInt(Integer::parseInt);
     }
 }

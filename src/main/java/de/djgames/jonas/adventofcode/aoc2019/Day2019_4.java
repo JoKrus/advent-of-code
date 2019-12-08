@@ -26,12 +26,12 @@ public class Day2019_4 extends Day {
             }
             return true;
         }).filter(value -> {
-            HashMap<Character, Integer> occurences = new HashMap<>();
+            HashMap<Character, Integer> occurrences = new HashMap<>();
             for (char c : String.valueOf(value).toCharArray()) {
-                occurences.put(c, occurences.getOrDefault(c, 0) + 1);
+                occurrences.put(c, occurrences.getOrDefault(c, 0) + 1);
             }
 
-            return part1 ? occurences.values().stream().mapToInt(Integer::intValue).max().orElse(0) >= 2 : occurences.containsValue(2);
+            return part1 ? occurrences.values().stream().mapToInt(Integer::intValue).max().orElse(0) >= 2 : occurrences.containsValue(2);
         }).count());
     }
 }

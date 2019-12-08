@@ -12,9 +12,9 @@ public class Day2019_6 extends Day {
     public String part1Logic() {
         Triple<Node, List<Node>, Map<String, List<String>>> things = getThings();
 
-        int orbitcount = things.getMiddle().stream().mapToInt(Node::getCount).sum();
+        int orbitCount = things.getMiddle().stream().mapToInt(Node::getCount).sum();
 
-        return String.format("%d", orbitcount);
+        return String.format("%d", orbitCount);
     }
 
     @Override
@@ -23,7 +23,6 @@ public class Day2019_6 extends Day {
 
         Node you = triple.getMiddle().stream().filter(node -> node.self.equals("YOU")).findFirst().orElse(null);
         Node san = triple.getMiddle().stream().filter(node -> node.self.equals("SAN")).findFirst().orElse(null);
-
 
         int dist = 0;
         if (you != null && san != null) {
@@ -43,34 +42,34 @@ public class Day2019_6 extends Day {
 
     private Triple<Node, List<Node>, Map<String, List<String>>> getThings() {
         String[] orbitList = input.split("\n");
-        Map<String, List<String>> orbitter = new HashMap<>();
+        Map<String, List<String>> orbiter = new HashMap<>();
 
         for (String s : orbitList) {
             String[] arg = s.split(Pattern.quote(")"));
-            List<String> vals = orbitter.getOrDefault(arg[0], new ArrayList<>());
-            vals.add(arg[1]);
-            orbitter.put(arg[0], vals);
+            List<String> values = orbiter.getOrDefault(arg[0], new ArrayList<>());
+            values.add(arg[1]);
+            orbiter.put(arg[0], values);
         }
 
-        Node root = new Node(null, "COM", orbitter);
+        Node root = new Node(null, "COM", orbiter);
 
         List<Node> nodes = new ArrayList<>();
         root.getAllNodes(nodes);
 
-        return Triple.of(root, nodes, orbitter);
+        return Triple.of(root, nodes, orbiter);
     }
 
     private static class Node {
         Node parent;
         String self;
-        List<Node> childs;
+        List<Node> children;
 
-        public Node(Node parent, String self, Map<String, List<String>> orbitter) {
+        public Node(Node parent, String self, Map<String, List<String>> orbiter) {
             this.parent = parent;
             this.self = self;
-            childs = new ArrayList<>();
-            if (orbitter.get(self) != null && !orbitter.get(self).isEmpty()) {
-                orbitter.get(self).forEach(s -> this.childs.add(new Node(this, s, orbitter)));
+            children = new ArrayList<>();
+            if (orbiter.get(self) != null && !orbiter.get(self).isEmpty()) {
+                orbiter.get(self).forEach(s -> this.children.add(new Node(this, s, orbiter)));
             }
         }
 
@@ -91,19 +90,19 @@ public class Day2019_6 extends Day {
 
         public void getAllNodes(List<Node> list) {
             list.add(this);
-            if (!childs.isEmpty()) {
-                childs.forEach(node -> node.getAllNodes(list));
+            if (!children.isEmpty()) {
+                children.forEach(node -> node.getAllNodes(list));
             }
         }
 
         private Node deepContains(Node n) {
-            if (childs.contains(n)) {
+            if (children.contains(n)) {
                 return this;
-            } else if (!this.childs.isEmpty()) {
-                for (Node start : this.childs) {
-                    boolean[] boolref = {false};
-                    start.deepContains(n, boolref);
-                    if (boolref[0])
+            } else if (!this.children.isEmpty()) {
+                for (Node start : this.children) {
+                    boolean[] boolRef = {false};
+                    start.deepContains(n, boolRef);
+                    if (boolRef[0])
                         return start;
                 }
             }
@@ -111,24 +110,24 @@ public class Day2019_6 extends Day {
         }
 
         private void deepContains(Node n, boolean[] found) {
-            if (childs.contains(n)) {
+            if (children.contains(n)) {
                 found[0] = true;
-            } else if (!this.childs.isEmpty()) {
-                for (Node node : childs) {
+            } else if (!this.children.isEmpty()) {
+                for (Node node : children) {
                     node.deepContains(n, found);
                 }
             }
         }
 
         public void moveNodeToParent() {
-            this.parent.parent.childs.add(this);
-            this.parent.childs.remove(this);
+            this.parent.parent.children.add(this);
+            this.parent.children.remove(this);
             this.parent = parent.parent;
         }
 
         public void moveNodeToChild(Node child) {
-            parent.childs.remove(this);
-            child.childs.add(this);
+            parent.children.remove(this);
+            child.children.add(this);
             this.parent = child;
         }
 
@@ -149,7 +148,7 @@ public class Day2019_6 extends Day {
         public String toString() {
             return "Node{" +
                     "self='" + self + '\'' +
-                    ", childs=" + childs.stream().map(node -> node.self).collect(Collectors.toList()) +
+                    ", children=" + children.stream().map(node -> node.self).collect(Collectors.toList()) +
                     '}';
         }
     }

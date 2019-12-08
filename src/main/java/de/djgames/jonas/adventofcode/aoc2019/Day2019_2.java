@@ -9,21 +9,21 @@ import static de.djgames.jonas.adventofcode.misc.Opcoder.runOpcodeLegacy;
 public class Day2019_2 extends Day {
     @Override
     public String part1Logic() {
-        int[] instrs = Arrays.stream(input.split("\n")[0].split(",")).mapToInt(Integer::parseInt).toArray();
-        instrs[1] = 12;
-        instrs[2] = 2;
+        int[] instructions = Arrays.stream(input.split("\n")[0].split(",")).mapToInt(Integer::parseInt).toArray();
+        instructions[1] = 12;
+        instructions[2] = 2;
 
-        return String.format("%d", runOpcodeLegacy(instrs, 0, 0));
+        return String.format("%d", runOpcodeLegacy(instructions, 0));
     }
 
     @Override
     public String part2Logic() {
         for (int noun = 0; noun < 100; ++noun) {
             for (int verb = 0; verb < 100; ++verb) {
-                int[] instrs = Arrays.stream(input.split("\n")[0].split(",")).mapToInt(Integer::parseInt).toArray();
-                instrs[1] = noun;
-                instrs[2] = verb;
-                if (runOpcodeLegacy(instrs, 0, 0) == Integer.parseInt(input.split("\n")[1]))
+                int[] instructions = Arrays.stream(input.split("\n")[0].split(",")).mapToInt(Integer::parseInt).toArray();
+                instructions[1] = noun;
+                instructions[2] = verb;
+                if (runOpcodeLegacy(instructions, 0) == Integer.parseInt(input.split("\n")[1]))
                     return String.format("%d", 100 * noun + verb);
             }
         }
