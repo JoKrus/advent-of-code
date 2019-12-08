@@ -32,6 +32,7 @@ public class Opcoder {
         this(original, "Default");
     }
 
+
     public void runOpcode() {
         Function<Integer, Integer> firstPMode = opCodeEntry -> (opCodeEntry / 100) % 10;
         Function<Integer, Integer> secondPMode = opCodeEntry -> (opCodeEntry / 1000) % 10;
@@ -128,9 +129,7 @@ public class Opcoder {
 
     @Override
     public String toString() {
-        return "Opcoder{" +
-                "ident='" + ident + '\'' +
-                '}';
+        return this.ident;
     }
 
     public static class InstructionTypes {
@@ -164,5 +163,69 @@ public class Opcoder {
         public int getValue() {
             return val;
         }
+    }
+
+    /**
+     * Old Opcode Parser, only compatible up to Day 7-1
+     *
+     * @param instrs            opcodeArray
+     * @param progOutputAddress address where output is located, if < 0, output is last result of an opcode 4
+     * @param progInput         input array for opcode 3
+     * @return result of machine
+     */
+    public static int runOpcodeLegacy(int[] instrs, int progOutputAddress, int... progInput) {
+        Function<Integer, Integer> firstPMode = opCodeEntry -> (opCodeEntry / 100) % 10;
+        Function<Integer, Integer> secondPMode = opCodeEntry -> (opCodeEntry / 1000) % 10;
+        BiFunction<Integer, Integer, Integer> value = (mode, val) -> mode != 0 ? val : instrs[val];
+        int ret = 0;
+        int i = 0;
+        int inpI = 0;
+        while (i < instrs.length && instrs[i] != 99) {
+            switch (instrs[i] % 100) {
+                case 1:
+                    var num1 = value.apply(firstPMode.apply(instrs[i]), instrs[i + 1]);
+                    var num2 = value.apply(secondPMode.apply(instrs[i]), instrs[i + 2]);
+                    instrs[instrs[i + 3]] = num1 + num2;
+                    i += 4;
+                    break;
+                case 2:
+                    num1 = value.apply(firstPMode.apply(instrs[i]), instrs[i + 1]);
+                    num2 = value.apply(secondPMode.apply(instrs[i]), instrs[i + 2]);
+                    instrs[instrs[i + 3]] = num1 * num2;
+                    i += 4;
+                    break;
+                case 3:
+                    instrs[instrs[i + 1]] = progInput[inpI++];
+                    i += 2;
+                    break;
+                case 4:
+                    ret = value.apply(firstPMode.apply(instrs[i]), instrs[i + 1]);
+                    i += 2;
+                    break;
+                case 5:
+                    num1 = value.apply(firstPMode.apply(instrs[i]), instrs[i + 1]);
+                    num2 = value.apply(secondPMode.apply(instrs[i]), instrs[i + 2]);
+                    i = num1 == 0 ? i + 3 : num2;
+                    break;
+                case 6:
+                    num1 = value.apply(firstPMode.apply(instrs[i]), instrs[i + 1]);
+                    num2 = value.apply(secondPMode.apply(instrs[i]), instrs[i + 2]);
+                    i = num1 != 0 ? i + 3 : num2;
+                    break;
+                case 7:
+                    num1 = value.apply(firstPMode.apply(instrs[i]), instrs[i + 1]);
+                    num2 = value.apply(secondPMode.apply(instrs[i]), instrs[i + 2]);
+                    instrs[instrs[i + 3]] = num1 < num2 ? 1 : 0;
+                    i += 4;
+                    break;
+                case 8:
+                    num1 = value.apply(firstPMode.apply(instrs[i]), instrs[i + 1]);
+                    num2 = value.apply(secondPMode.apply(instrs[i]), instrs[i + 2]);
+                    instrs[instrs[i + 3]] = num1.equals(num2) ? 1 : 0;
+                    i += 4;
+                    break;
+            }
+        }
+        return progOutputAddress < 0 ? ret : instrs[progOutputAddress];
     }
 }

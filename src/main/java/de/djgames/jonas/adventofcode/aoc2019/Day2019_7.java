@@ -18,7 +18,7 @@ public class Day2019_7 extends Day {
             int out = 0;
             for (int phase : phaseList) {
                 int[] array = Arrays.copyOf(arr, arr.length);
-                out = Day2019_5.runOpcodeLegacy(array, -1, phase, out);
+                out = Opcoder.runOpcodeLegacy(array, -1, phase, out);
             }
             if (out > max) max = out;
         }

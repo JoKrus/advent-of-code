@@ -4,7 +4,7 @@ import de.djgames.jonas.adventofcode.Day;
 
 import java.util.Arrays;
 
-import static de.djgames.jonas.adventofcode.aoc2019.Day2019_5.runOpcodeLegacy;
+import static de.djgames.jonas.adventofcode.misc.Opcoder.runOpcodeLegacy;
 
 public class Day2019_2 extends Day {
     @Override

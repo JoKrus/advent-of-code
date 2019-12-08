@@ -61,11 +61,11 @@ public class Day2019_8 extends Day {
             }
         }
 
-        StringBuilder ret = new StringBuilder(System.lineSeparator());
+        StringBuilder ret = new StringBuilder();
 
         for (int[] ints : seenLayer) {
-            ret.append(rowToString(ints));
             ret.append(System.lineSeparator());
+            ret.append(rowToString(ints));
         }
 
         return ret.toString();
