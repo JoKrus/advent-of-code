@@ -23,7 +23,7 @@ public abstract class Day {
         try {
             part1 = part1();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         String part2 = "FAILED";
         try {
