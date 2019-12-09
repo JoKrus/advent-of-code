@@ -43,18 +43,40 @@ public class Opcoder {
             long ret = 0;
             switch (mode) {
                 case INDEX:
+                    lengthenInstructions(val.intValue());
                     ret = instructions.get(val.intValue());
                     break;
                 case IMMEDIATE:
                     ret = val;
                     break;
                 case RELATIVE:
-                    ret = instructions.get(relativeBase + val.intValue());
+                    int index = relativeBase + val.intValue();
+                    lengthenInstructions(index);
+                    ret = instructions.get(index);
                     break;
             }
 
             return ret;
         };
+        BiFunction<Mode, Long, Integer> indexCalc = (mode, val) -> {
+            int ret = 0;
+            switch (mode) {
+                case INDEX:
+                    lengthenInstructions(val.intValue());
+                    ret = val.intValue();
+                    break;
+                case IMMEDIATE:
+                    ret = -1;
+                    break;
+                case RELATIVE:
+                    int index = relativeBase + val.intValue();
+                    lengthenInstructions(index);
+                    ret = index;
+                    break;
+            }
+            return ret;
+        };
+
         while (true) {
             if (pointer >= instructions.size()) {
                 haltType = HaltTypes.EXIT_LENGTH;
@@ -63,23 +85,53 @@ public class Opcoder {
                 haltType = HaltTypes.EXIT99;
                 break;
             }
-            var num1 = value.apply(firstPMode.apply(instructions.get(pointer)), instructions.get(pointer + 1));
-            var num2 = value.apply(secondPMode.apply(instructions.get(pointer)), instructions.get(pointer + 2));
+
+            int index1 = -1;
+            try {
+                index1 = indexCalc.apply(firstPMode.apply(instructions.get(pointer)), instructions.get(pointer + 1));
+            } catch (IndexOutOfBoundsException ignored) {
+            }
+            Long value1 = 0L;
+            try {
+                value1 = value.apply(firstPMode.apply(instructions.get(pointer)), instructions.get(pointer + 1));
+            } catch (IndexOutOfBoundsException ignored) {
+            }
+
+            int index2 = -1;
+            try {
+                index2 = indexCalc.apply(secondPMode.apply(instructions.get(pointer)), instructions.get(pointer + 2));
+            } catch (IndexOutOfBoundsException ignored) {
+            }
+            Long value2 = 0L;
+            try {
+                value2 = value.apply(secondPMode.apply(instructions.get(pointer)), instructions.get(pointer + 2));
+            } catch (IndexOutOfBoundsException ignored) {
+            }
+
+            int index3 = -1;
+            try {
+                index3 = indexCalc.apply(thirdPMode.apply(instructions.get(pointer)), instructions.get(pointer + 3));
+            } catch (IndexOutOfBoundsException ignored) {
+            }
+            Long value3 = 0L;
+            try {
+                value3 = value.apply(thirdPMode.apply(instructions.get(pointer)), instructions.get(pointer + 3));
+            } catch (IndexOutOfBoundsException ignored) {
+            }
+
+            int index;
+
             switch ((int) (instructions.get(pointer) % 100)) {
                 case InstructionTypes.ADD:
-                    int index = instructions.get(pointer + 3).intValue();
-                    if (index > instructions.size()) {
-                        instructions.ensureCapacity(index + 1);
-                    }
-                    instructions.set(index, num1 + num2);
+                    index = index3;
+                    lengthenInstructions(index);
+                    instructions.set(index, value1 + value2);
                     pointer += 4;
                     break;
                 case InstructionTypes.MULT:
-                    index = instructions.get(pointer + 3).intValue();
-                    if (index > instructions.size()) {
-                        instructions.ensureCapacity(index + 1);
-                    }
-                    instructions.set(instructions.get(pointer + 3).intValue(), num1 * num2);
+                    index = index3;
+                    lengthenInstructions(index);
+                    instructions.set(index, value1 * value2);
                     pointer += 4;
                     break;
                 case InstructionTypes.INPUT:
@@ -87,47 +139,53 @@ public class Opcoder {
                         haltType = HaltTypes.EXIT_WAIT;
                         return;
                     }
-                    index = instructions.get(pointer + 1).intValue();
-                    if (index > instructions.size()) {
-                        instructions.ensureCapacity(index + 1);
-                    }
+                    index = index1;
+                    lengthenInstructions(index);
                     instructions.set(index, input.poll());
                     pointer += 2;
                     break;
                 case InstructionTypes.OUTPUT:
-                    output.add(value.apply(firstPMode.apply(instructions.get(pointer)), instructions.get(pointer + 1)));
+                    output.add(value1);
                     pointer += 2;
                     break;
                 case InstructionTypes.JUMP_TRUE:
-                    pointer = num1 == 0 ? pointer + 3 : num2.intValue();
+                    pointer = (value1 == 0L ? pointer + 3 : value2.intValue());
                     break;
                 case InstructionTypes.JUMP_FALSE:
-                    pointer = num1 != 0 ? pointer + 3 : num2.intValue();
+                    pointer = (value1 != 0L ? pointer + 3 : value2.intValue());
                     break;
                 case InstructionTypes.LESS_THAN:
-                    index = instructions.get(pointer + 3).intValue();
-                    if (index > instructions.size()) {
-                        instructions.ensureCapacity(index + 1);
-                    }
-                    instructions.set(index, (long) (num1 < num2 ? 1 : 0));
+                    index = index3;
+                    lengthenInstructions(index);
+
+                    instructions.set(index, (long) (value1 < value2 ? 1 : 0));
                     pointer += 4;
                     break;
                 case InstructionTypes.EQUALS:
-                    index = instructions.get(pointer + 3).intValue();
-                    if (index > instructions.size()) {
-                        instructions.ensureCapacity(index + 1);
-                    }
-                    instructions.set(index, (long) (num1.equals(num2) ? 1 : 0));
+                    index = index3;
+                    lengthenInstructions(index);
+                    instructions.set(index, (long) (value1.equals(value2) ? 1 : 0));
                     pointer += 4;
                     break;
                 case InstructionTypes.ADJUST_BASE:
-                    relativeBase = num1.intValue();
+                    index = index1;
+                    lengthenInstructions(index);
+                    relativeBase += value1.intValue();
+                    pointer += 2;
                     break;
+                default:
+                    throw new RuntimeException("NA Opcode");
             }
         }
     }
 
-    void reset() {
+    private void lengthenInstructions(int newL) {
+        while (newL + 1 >= instructions.size()) {
+            instructions.add(0L);
+        }
+    }
+
+    public void reset() {
         instructions = Arrays.stream(Arrays.copyOf(original, original.length)).
                 boxed().collect(Collectors.toCollection(ArrayList::new));
         pointer = 0;
@@ -177,7 +235,7 @@ public class Opcoder {
 
         private int val;
 
-        private Mode(int value) {
+        Mode(int value) {
             val = value;
         }
 

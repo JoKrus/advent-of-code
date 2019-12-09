@@ -10,7 +10,6 @@ import java.util.TreeSet;
  * Hello world!
  */
 public class App {
-
     /*
     Day2019_1: 3231195, 4843929
     Day2019_2: 4090701, 6421
@@ -19,6 +18,14 @@ public class App {
     Day2019_5: 9654885, 7079459
     Day2019_6: 254447, 445
     Day2019_7: 24625, 36497698
+    Day2019_8: 2193,
+    1   11111 1  1 1111 1111
+    1   11    1  1 1    1
+     1 1 111  1111 111  111
+      1  1    1  1 1    1
+      1  1    1  1 1    1
+      1  1111 1  1 1111 1
+    Day2019_9: 3742852857, 73439
     */
 
     public static void main(String[] args) {
@@ -27,7 +34,7 @@ public class App {
         challenges.addAll(reflections.getSubTypesOf(Day.class));
 
         runAll(challenges);
-        //runSinglePart(Day2019_7.class, false);
+        //runSinglePart(Day2019_9.class, true);
     }
 
     public static void runSinglePart(Class<? extends Day> dayClass, boolean part1) {
