@@ -30,8 +30,8 @@ public class Day2019_7 extends Day {
         List<Integer> phaseTypeList = List.of(5, 6, 7, 8, 9);
         List<List<Integer>> permutations = Generator.permutation(phaseTypeList).simple().stream().collect(Collectors.toList());
 
-        Integer max = 0;
-        int[] baseArray = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).toArray();
+        Long max = 0L;
+        long[] baseArray = Arrays.stream(input.split(",")).mapToLong(Long::parseLong).toArray();
 
         for (List<Integer> phaseList : permutations) {
             ArrayList<Opcoder> opcoderList = new ArrayList<>();
@@ -41,7 +41,7 @@ public class Day2019_7 extends Day {
                 opcoderList.add(opcoder);
             }
             Queue<Opcoder> opcoderQ = new ArrayDeque<>(opcoderList);
-            Queue<Integer> transfer = new ArrayDeque<>(Collections.singleton(0));
+            Queue<Long> transfer = new ArrayDeque<>(Collections.singleton(0L));
             while (!opcoderQ.isEmpty()) {
                 Opcoder opcoder = opcoderQ.poll();
                 opcoder.addInput(transfer);
