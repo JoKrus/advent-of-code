@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import static de.djgames.jonas.adventofcode.misc.Opcoder.runOpcodeLegacy;
 
-public class Day2019_2 extends Day {
+public class Day2019_02 extends Day {
     @Override
     public String part1Logic() {
         int[] instructions = Arrays.stream(input.split("\n")[0].split(",")).mapToInt(Integer::parseInt).toArray();

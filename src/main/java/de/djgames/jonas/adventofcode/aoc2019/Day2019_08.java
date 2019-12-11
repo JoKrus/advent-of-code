@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class Day2019_8 extends Day {
+public class Day2019_08 extends Day {
     @Override
     public String part1Logic() {
         return doWork(true);

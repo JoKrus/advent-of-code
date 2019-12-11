@@ -5,7 +5,7 @@ import de.djgames.jonas.adventofcode.Day;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-public class Day2019_1 extends Day {
+public class Day2019_01 extends Day {
 
     @Override
     public String part1Logic() {

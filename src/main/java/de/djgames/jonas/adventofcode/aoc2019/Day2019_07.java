@@ -7,7 +7,7 @@ import org.paukov.combinatorics3.Generator;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Day2019_7 extends Day {
+public class Day2019_07 extends Day {
     @Override
     public String part1Logic() {
         List<Integer> phaseTypeList = List.of(0, 1, 2, 3, 4);

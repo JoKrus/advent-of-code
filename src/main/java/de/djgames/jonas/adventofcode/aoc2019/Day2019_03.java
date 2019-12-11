@@ -5,7 +5,7 @@ import de.djgames.jonas.adventofcode.Day;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class Day2019_3 extends Day {
+public class Day2019_03 extends Day {
     @Override
     public String part1Logic() {
         return run(true);

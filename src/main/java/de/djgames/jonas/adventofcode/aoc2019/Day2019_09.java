@@ -5,7 +5,7 @@ import de.djgames.jonas.adventofcode.misc.Opcoder;
 
 import java.util.Arrays;
 
-public class Day2019_9 extends Day {
+public class Day2019_09 extends Day {
     @Override
     public String part1Logic() {
         return run(true);

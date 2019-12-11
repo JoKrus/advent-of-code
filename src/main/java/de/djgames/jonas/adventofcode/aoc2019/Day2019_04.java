@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.stream.IntStream;
 
-public class Day2019_4 extends Day {
+public class Day2019_04 extends Day {
     @Override
     public String part1Logic() {
         return run(true);

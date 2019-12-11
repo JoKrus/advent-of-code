@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class Day2019_6 extends Day {
+public class Day2019_06 extends Day {
     @Override
     public String part1Logic() {
         Triple<Node, List<Node>, Map<String, List<String>>> things = getThings();
