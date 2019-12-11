@@ -2,21 +2,14 @@ package de.djgames.jonas.adventofcode.aoc2019;
 
 import de.djgames.jonas.adventofcode.Day;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Day2019_10 extends Day {
     @Override
     public String part1Logic() {
-        input = "#.#...#.#.\n" +
-                ".###....#.\n" +
-                ".#....#...\n" +
-                "##.#.#.#.#\n" +
-                "....#.#.#.\n" +
-                ".##..###.#\n" +
-                "..#...##..\n" +
-                "..##....##\n" +
-                "......#...\n" +
-                ".####.###.";
         return exec(true);
     }
 
@@ -29,7 +22,6 @@ public class Day2019_10 extends Day {
 
         for (int y = 0; y < cometNet[0].length; y++) {
             for (int x = 0; x < cometNet.length; x++) {
-                System.out.println(x + "," + y + " | " + cometNet[x][y]);
                 if (cometNet[x][y]) {
                     Set<Vector> cometVectors = cometVectors(x, y, cometNet);
                     int seen = cometVectors.size();
@@ -38,8 +30,6 @@ public class Day2019_10 extends Day {
                         maxX = x;
                         maxY = y;
                         maxCometVectors = cometVectors;
-                        System.out.println(maxSeen);
-                        System.out.println(maxX + "," + maxY);
                     }
                 }
             }
@@ -50,14 +40,12 @@ public class Day2019_10 extends Day {
         cometNet[maxX][maxY] = false;
 
 
-        int destroyed = 0;
-        //if (maxCometVectors == null || maxCometVectors.size() < 200) throw new RuntimeException("NA Aufgabe");
-        int comet200X = 0;
-        int comet200Y = 0;
-
+        int destroyed = 1;
+        int comet200X;
+        int comet200Y;
+        if (maxCometVectors == null) throw new RuntimeException("NA Vector");
         outer:
         while (true) {
-            vectorLoop:
             for (Vector v : maxCometVectors) {
                 destroyed++;
                 //sort by angle, dann ganze zeit nur array durchgehen immer in i * vector, wenn was findet zaehler + 1 und asteroid entfernen
@@ -74,8 +62,6 @@ public class Day2019_10 extends Day {
                     }
                 } catch (IndexOutOfBoundsException ignored) {
                 }
-
-                System.out.printf("%3d : (%2d,%2d) with Vector %s from Point (%2d,%2d)%n", destroyed, diffx + maxX, diffy + maxY, v, maxX, maxY);
                 if (destroyed == 200) {
                     comet200X = diffx + maxX;
                     comet200Y = diffy + maxY;
@@ -91,33 +77,12 @@ public class Day2019_10 extends Day {
 
     @Override
     public String part2Logic() {
-        input = ".#..##.###...#######\n" +
-                "##.############..##.\n" +
-                ".#.######.########.#\n" +
-                ".###.#######.####.#.\n" +
-                "#####.##.#.##.###.##\n" +
-                "..#####..#.#########\n" +
-                "####################\n" +
-                "#.####....###.#.#.##\n" +
-                "##.#################\n" +
-                "#####.##.###..####..\n" +
-                "..######..##.#######\n" +
-                "####.##.####...##..#\n" +
-                ".#####..#.######.###\n" +
-                "##...#.##########...\n" +
-                "#.##########.#######\n" +
-                ".####.#.###.###.#.##\n" +
-                "....##.##.###..#####\n" +
-                ".#.#.###########.###\n" +
-                "#.#.#.#####.####.###\n" +
-                "###.##.####.##.#..##";
         return exec(false);
     }
 
     //first param x, second y
     private boolean[][] generateCometNet() {
         String[] lines = input.split("\n");
-        Collections.reverse(Arrays.asList(lines));
         boolean[][] cometNet = new boolean[lines[0].length()][lines.length];
         for (int y = 0; y < lines.length; y++) {
             String line = lines[y];
@@ -138,21 +103,17 @@ public class Day2019_10 extends Day {
     }
 
     private Set<Vector> cometVectors(int fromX, int fromY, boolean[][] cometNet) {
-        Vector compareAngle = Vector.of(0, 1);
-        //TreeSet<Vector> seen = new TreeSet<>(Comparator.comparingDouble(o -> o.getAngle(fromX, fromY, compareAngle)));
-        Set<Vector> seen = new HashSet<>();
+        final Vector compareAngle = Vector.of(0, -1);
+        TreeSet<Vector> seenTree = new TreeSet<>(Comparator.comparingDouble(o -> -o.getAngle(0, 0, compareAngle)));
         for (int x = 0; x < cometNet.length; ++x) {
             for (int y = 0; y < cometNet[x].length; ++y) {
                 if (cometNet[x][y] && !(fromX == x && fromY == y)) {
                     Vector vector = Vector.of(x - fromX, y - fromY);
-                    seen.add(vector);
+                    seenTree.add(vector);
                 }
             }
         }
-
-        seen.remove(Vector.of(0, 0));
-        System.out.println(seen.size());
-        return seen;
+        return seenTree;
     }
 
     public static class Vector {
@@ -167,7 +128,7 @@ public class Day2019_10 extends Day {
             Vector newBase = new Vector(this.x - basex, this.y - basey);
             double dot = newBase.x * angle0.x + newBase.y * angle0.y;
             double det = newBase.x * angle0.y - newBase.y * angle0.x;
-            return Math.atan2(det, dot);
+            return ((Math.atan2(det, dot) * 180 / Math.PI) + 360) % 360;
         }
 
         public static Vector of(int x, int y) {

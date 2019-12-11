@@ -35,7 +35,7 @@ public class App {
         challenges.addAll(reflections.getSubTypesOf(Day.class));
 
         // runAll(challenges);
-        runSinglePart(Day2019_10.class, false);
+        // runSinglePart(Day2019_10.class, true);
         runSingle(Day2019_10.class);
         //runSinglePart(Day2019_9.class, true);
     }
