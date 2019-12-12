@@ -143,9 +143,6 @@ public class Day2019_10 extends Day {
             return new Vector(newX, newY);
         }
 
-        private static int gcd(int a, int b) {
-            return b == 0 ? a : gcd(b, a % b);
-        }
 
         @Override
         public boolean equals(Object o) {
@@ -167,4 +164,11 @@ public class Day2019_10 extends Day {
         }
     }
 
+    public static int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+
+    public static long gcd(long a, long b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
 }
