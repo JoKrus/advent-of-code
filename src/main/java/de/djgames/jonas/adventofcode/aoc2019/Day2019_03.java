@@ -65,8 +65,12 @@ public class Day2019_03 extends Day {
         return String.format("%d", intersections.values().stream().mapToInt(Integer::intValue).min().orElse(-1));
     }
 
-    private static class Pos {
+    public static class Pos {
         private final int dist, x, y, pathID;
+
+        public Pos(int x, int y) {
+            this(x, y, 0, 0);
+        }
 
         public Pos(int x, int y, int pathID, int dist) {
             this.x = x;
@@ -82,6 +86,14 @@ public class Day2019_03 extends Day {
             Pos pos = (Pos) o;
             return x == pos.x &&
                     y == pos.y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public int getY() {
+            return y;
         }
 
         @Override
