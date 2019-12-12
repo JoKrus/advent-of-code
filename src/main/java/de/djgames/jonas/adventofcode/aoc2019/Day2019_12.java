@@ -7,6 +7,8 @@ import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.math3.util.ArithmeticUtils.lcm;
+
 public class Day2019_12 extends Day {
 
     @Override
@@ -84,17 +86,13 @@ public class Day2019_12 extends Day {
 
         long xloops = findLoop(xs), yloops = findLoop(ys), zloops = findLoop(zs);
 
-        System.out.printf("%d,%d,%d%n", xloops, yloops, zloops);
-
         long lcmxy = lcm(xloops, yloops);
+        long lcmyz = lcm(yloops, zloops);
+        long lcmzx = lcm(zloops, xloops);
 
-        return String.format("%d", lcm(lcmxy, zloops));
-    }
+        System.out.println(lcm(lcmxy, lcmyz) == lcm(lcmyz, lcmzx));
 
-    public static long lcm(long i, long i2) {
-        long div = Day2019_10.gcd(i, i2);
-        if (div == 0) div = 1;
-        return (i * i2) / div;
+        return String.format("%d", lcm(lcmxy, lcmyz));
     }
 
     private static List<Coordinate> copyDeep(List<Coordinate> list) {
@@ -171,8 +169,10 @@ public class Day2019_12 extends Day {
         @Override
         public int compareTo(Coordinate o) {
             int posEq = this.pos - o.pos;
-            if (posEq != 0) return posEq;
-            return this.vel - o.vel;
+            int velEq = this.vel - o.vel;
+            if (Math.abs(posEq) + Math.abs(velEq) == 0) return 0;
+            if (posEq == 0) return velEq;
+            return posEq;
         }
     }
 
