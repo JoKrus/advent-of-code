@@ -52,10 +52,10 @@ public class Day2019_03 extends Day {
                     dist += Math.abs(difx) + Math.abs(dify);
                     Pos pos = new Pos(actx, acty, pathID, dist);
                     Pos oldPos = nextLevelPositionSet.getOrDefault(pos, new Pos(actx, acty, -100, dist));
-                    if (pos.pathID != oldPos.pathID && oldPos.pathID != -100) {
+                    if (pos.id != oldPos.id && oldPos.id != -100) {
                         int value = part1 ? Math.abs(actx) + Math.abs(acty) : dist + oldPos.dist;
                         intersections.putIfAbsent(pos, value);
-                    } else if (oldPos.pathID == -100) {
+                    } else if (oldPos.id == -100) {
                         nextLevelPositionSet.put(pos, pos);
                     }
                 }
@@ -66,16 +66,20 @@ public class Day2019_03 extends Day {
     }
 
     public static class Pos {
-        private final int dist, x, y, pathID;
+        private final int dist, x, y, id;
 
         public Pos(int x, int y) {
             this(x, y, 0, 0);
         }
 
-        public Pos(int x, int y, int pathID, int dist) {
+        public Pos(int x, int y, int id) {
+            this(x, y, id, 0);
+        }
+
+        public Pos(int x, int y, int id, int dist) {
             this.x = x;
             this.y = y;
-            this.pathID = pathID;
+            this.id = id;
             this.dist = dist;
         }
 
@@ -94,6 +98,10 @@ public class Day2019_03 extends Day {
 
         public int getY() {
             return y;
+        }
+
+        public int getId() {
+            return id;
         }
 
         @Override
