@@ -1,5 +1,6 @@
 package de.djgames.jonas.adventofcode;
 
+import de.djgames.jonas.adventofcode.aoc2019.Day2019_14;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,8 +35,8 @@ public class App {
         TreeSet<Class<? extends Day>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
         challenges.addAll(reflections.getSubTypesOf(Day.class));
 
-        runAll(challenges);
-        // runSinglePart(Day2019_10.class, true);
+        //runAll(challenges);
+        runSingle(Day2019_14.class);
     }
 
     public static void runSinglePart(Class<? extends Day> dayClass, boolean part1) {

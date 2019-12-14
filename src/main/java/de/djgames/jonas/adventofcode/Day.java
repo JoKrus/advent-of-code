@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public abstract class Day {
     protected String input;
 
-    public void readAndSetInput() {
+    public final void readAndSetInput() {
         if (input == null) {
             input = new BufferedReader(new InputStreamReader(
                     Objects.requireNonNull(Thread.currentThread().getContextClassLoader().
