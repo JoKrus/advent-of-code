@@ -34,6 +34,9 @@ public class Opcoder {
         this(original, "Default");
     }
 
+    public Opcoder(String string) {
+        this(Arrays.stream(string.split(",")).mapToLong(Long::parseLong).toArray());
+    }
 
     public void runOpcode() {
         Function<Long, Mode> firstPMode = opCodeEntry -> Mode.of((opCodeEntry / 100) % 10);

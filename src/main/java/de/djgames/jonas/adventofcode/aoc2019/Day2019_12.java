@@ -90,8 +90,6 @@ public class Day2019_12 extends Day {
         long lcmyz = lcm(yloops, zloops);
         long lcmzx = lcm(zloops, xloops);
 
-        System.out.println(lcm(lcmxy, lcmyz) == lcm(lcmyz, lcmzx));
-
         return String.format("%d", lcm(lcmxy, lcmyz));
     }
 
