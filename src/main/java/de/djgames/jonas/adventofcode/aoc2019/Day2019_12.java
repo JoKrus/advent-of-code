@@ -64,7 +64,7 @@ public class Day2019_12 extends Day {
         return String.format("%d", moons.stream().mapToInt(Moon::getTotalEnergy).sum());
     }
 
-    private static int compareIntSmooth(int i, int i2) {
+    public static int compareIntSmooth(int i, int i2) {
         int comp = Integer.compare(i, i2);
         if (comp == 0) return comp;
         return -1 * comp / Math.abs(comp);

@@ -36,15 +36,30 @@ public class Day2019_13 extends Day {
         long[] baseArray = Arrays.stream(input.split(",")).mapToLong(Long::parseLong).toArray();
         baseArray[0] = 2;
         Opcoder opcoder = new Opcoder(baseArray);
+        Queue<Long> queue;
+        int score = 0;
+        while (opcoder.getHaltType() != Opcoder.HaltTypes.EXIT99) {
+            opcoder.runOpcode();
 
+            opSet.clear();
+            queue = opcoder.getOutput();
+            while (!queue.isEmpty()) {
+                int x = queue.poll().intValue(), y = Objects.requireNonNull(queue.poll()).intValue(), id = Objects.requireNonNull(queue.poll()).intValue();
+                Pos p = new Pos(x, y, id);
+                if (p.getX() == -1 && p.getY() == 0) {
+                    score = p.getId();
+                } else {
+                    opSet.put(p, p);
+                }
+            }
 
-        Queue<Long> queue = opcoder.getOutput();
-        while (!queue.isEmpty()) {
-            int x = queue.poll().intValue(), y = Objects.requireNonNull(queue.poll()).intValue(), id = Objects.requireNonNull(queue.poll()).intValue();
-            Pos p = new Pos(x, y, id);
-            opSet.put(p, p);
+            int posyBall = opSet.values().stream().filter(pos -> pos.getId() == 4).mapToInt(Pos::getX).findFirst().orElse(0);
+            int posyPaddle = opSet.values().stream().filter(pos -> pos.getId() == 3).mapToInt(Pos::getX).findFirst().orElse(0);
+
+            opcoder.addInput(-1 * Day2019_12.compareIntSmooth(posyBall, posyPaddle));
         }
 
-        return String.format("%d", opSet.keySet().stream().filter(pos -> pos.getId() == 2).count());
+
+        return String.format("%d", score);
     }
 }
