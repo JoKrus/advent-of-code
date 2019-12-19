@@ -1,6 +1,5 @@
 package de.djgames.jonas.adventofcode;
 
-import de.djgames.jonas.adventofcode.aoc2019.Day2019_14;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,8 +34,8 @@ public class App {
         TreeSet<Class<? extends Day>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
         challenges.addAll(reflections.getSubTypesOf(Day.class));
 
-        //runAll(challenges);
-        runSingle(Day2019_14.class);
+        runAllTime(challenges);
+        //runSingle(Day2019_09.class);
     }
 
     public static void runSinglePart(Class<? extends Day> dayClass, boolean part1) {
@@ -58,5 +57,27 @@ public class App {
 
     public static void runAll(TreeSet<Class<? extends Day>> challenges) {
         challenges.forEach(App::runSingle);
+    }
+
+
+    public static void runAllTime(TreeSet<Class<? extends Day>> challenges) {
+        challenges.forEach(App::runSingleTime);
+    }
+
+    public static void runSingleTime(Class<? extends Day> dayClass) {
+        try {
+            Day day = dayClass.getConstructor().newInstance();
+            StringBuilder answer = new StringBuilder().append(day.getClass().getSimpleName()).append(": ");
+            day.readAndSetInput();
+            long start = System.nanoTime();
+            String day1 = day.part1Logic();
+            long middle = System.nanoTime();
+            String day2 = day.part2Logic();
+            long end = System.nanoTime();
+            String result = String.format("%s within %.3fms, %s within %.3fms", day1, (1. * middle - start) * 1e-6, day2, (1. * end - middle) * 1e-6);
+            System.out.println(answer.append(result));
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 }
