@@ -1,7 +1,7 @@
 package de.djgames.jonas.adventofcode.aoc2019;
 
 import de.djgames.jonas.adventofcode.Day;
-import de.djgames.jonas.adventofcode.misc.Opcoder;
+import de.djgames.jonas.adventofcode.aoc2019.misc.Opcoder;
 import org.paukov.combinatorics3.Generator;
 
 import java.util.*;

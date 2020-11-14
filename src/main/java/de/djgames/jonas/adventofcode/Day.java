@@ -1,6 +1,7 @@
 package de.djgames.jonas.adventofcode;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -49,6 +50,9 @@ public abstract class Day {
     public abstract String part2Logic();
 
     public final String getFileNameOfInput() {
-        return getClass().getSimpleName() + ".txt";
+        String suffix = ".txt";
+        String className = getClass().getSimpleName();
+        String yearPackageName = getClass().getPackageName().substring(getClass().getPackageName().lastIndexOf(".") + 1);
+        return yearPackageName + File.separator + className + suffix;
     }
 }

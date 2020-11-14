@@ -1,4 +1,4 @@
-package de.djgames.jonas.adventofcode.misc;
+package de.djgames.jonas.adventofcode.aoc2019.misc;
 
 import java.util.Objects;
 
