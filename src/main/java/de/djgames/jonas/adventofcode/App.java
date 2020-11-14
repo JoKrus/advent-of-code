@@ -30,7 +30,7 @@ public class App {
     */
 
     public static void main(String[] args) {
-        Reflections reflections = new Reflections("de.djgames.jonas.adventofcode");
+        Reflections reflections = new Reflections(App.class.getPackageName());
         TreeSet<Class<? extends Day>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
         challenges.addAll(reflections.getSubTypesOf(Day.class));
 
