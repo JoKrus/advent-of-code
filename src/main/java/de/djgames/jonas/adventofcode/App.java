@@ -68,12 +68,15 @@ public class App {
             Day day = dayClass.getConstructor().newInstance();
             StringBuilder answer = new StringBuilder().append(day.getClass().getSimpleName()).append(": ");
             day.readAndSetInput();
-            long start = System.nanoTime();
+            long part1Start = System.nanoTime();
             String day1 = day.part1Logic();
-            long middle = System.nanoTime();
+            long part1End = System.nanoTime();
+            day.readAndSetInput();
+            long part2Start = System.nanoTime();
             String day2 = day.part2Logic();
-            long end = System.nanoTime();
-            String result = String.format("%s within %.3fms, %s within %.3fms", day1, (1. * middle - start) * 1e-6, day2, (1. * end - middle) * 1e-6);
+            long part2End = System.nanoTime();
+            String result = String.format("%s within %.3fms, %s within %.3fms", day1, (1. * part1End - part1Start) * 1e-6, day2,
+                    (1. * part2End - part2Start) * 1e-6);
             System.out.println(answer.append(result));
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
