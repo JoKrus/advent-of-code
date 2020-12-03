@@ -36,7 +36,7 @@ public class App {
         challenges.addAll(reflections.getSubTypesOf(Day.class));
 
         //runAllTime(challenges);
-        runSingle(Day2020_03.class);
+        runSingleTime(Day2020_03.class);
     }
 
     public static void runSinglePart(Class<? extends Day> dayClass, boolean part1) {
