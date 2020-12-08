@@ -11,26 +11,33 @@ public class InstructionEngine {
     private int accumulator;
 
     public InstructionEngine(List<String> input) {
-        instructions = parseInput(input);
+        this(parseInput(input), false);
+    }
+
+    public InstructionEngine(List<Instruction> input, boolean changeSignature) {
+        instructions = input;
         pointer = 0;
         accumulator = 0;
     }
 
-    public void run(HaltMode mode) {
-        if (mode == HaltMode.INFINITE_LOOP) {
-            Set<Integer> alreadyExecuted = new HashSet<>();
-            while (!alreadyExecuted.contains(pointer)) {
-                boolean newlyAdded = alreadyExecuted.add(pointer);
-                if (!newlyAdded) break;
-
-                handleCurrentInstruction();
+    public HaltMode run(HaltMode mode) {
+        Set<Integer> alreadyExecuted = new HashSet<>();
+        while (pointer >= 0 && pointer < instructions.size()) {
+            boolean newlyAdded = alreadyExecuted.add(pointer);
+            if (mode == HaltMode.INFINITE_LOOP || mode == HaltMode.ANY) {
+                if (!newlyAdded) {
+                    return HaltMode.INFINITE_LOOP;
+                }
             }
+            handleCurrentInstruction();
         }
+        return HaltMode.END_OF_LINES;
     }
+
 
     private void handleCurrentInstruction() {
         var currentInstr = instructions.get(pointer);
-        switch (currentInstr.instruction) {
+        switch (currentInstr.operation) {
             case NOP:
                 break;
             case JMP:
@@ -47,7 +54,7 @@ public class InstructionEngine {
         return accumulator;
     }
 
-    private List<Instruction> parseInput(List<String> input) {
+    public static List<Instruction> parseInput(List<String> input) {
         return input.stream().map(s -> {
             String[] s1 = s.split(" ");
             return new Instruction(s1[0], Integer.parseInt(s1[1]));
@@ -55,6 +62,6 @@ public class InstructionEngine {
     }
 
     public enum HaltMode {
-        INFINITE_LOOP;
+        INFINITE_LOOP, END_OF_LINES, ANY;
     }
 }
