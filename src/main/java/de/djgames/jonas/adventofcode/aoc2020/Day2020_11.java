@@ -15,7 +15,7 @@ public class Day2020_11 extends Day {
         boolean change;
         do {
             change = false;
-            String nextLobby = currentLobby;
+            StringBuilder nextLobby = new StringBuilder(currentLobby);
             for (int y = 0; y < rows; ++y) {
                 for (int x = 0; x < columns; ++x) {
                     var currentChair = currentLobby.charAt(x + y * columns);
@@ -25,18 +25,14 @@ public class Day2020_11 extends Day {
                     int neighbours = checkNeigbours(y, x, columns, rows, currentLobby);
                     if (currentChair == 'L' && neighbours == 0) {
                         change = true;
-                        StringBuilder builder = new StringBuilder(nextLobby);
-                        builder.setCharAt(x + y * columns, '#');
-                        nextLobby = builder.toString();
+                        nextLobby.setCharAt(x + y * columns, '#');
                     } else if (currentChair == '#' && neighbours >= 4) {
                         change = true;
-                        StringBuilder builder = new StringBuilder(nextLobby);
-                        builder.setCharAt(x + y * columns, 'L');
-                        nextLobby = builder.toString();
+                        nextLobby.setCharAt(x + y * columns, 'L');
                     }
                 }
             }
-            currentLobby = nextLobby;
+            currentLobby = nextLobby.toString();
         } while (change);
 
         return "" + Arrays.stream(currentLobby.split("")).filter(s -> s.equals("#")).count();
@@ -104,7 +100,7 @@ public class Day2020_11 extends Day {
         boolean change;
         do {
             change = false;
-            String nextLobby = currentLobby;
+            StringBuilder nextLobby = new StringBuilder(currentLobby);
             for (int y = 0; y < rows; ++y) {
                 for (int x = 0; x < columns; ++x) {
                     var currentChair = currentLobby.charAt(x + y * columns);
@@ -114,18 +110,14 @@ public class Day2020_11 extends Day {
                     int neighbours = checkNeigbours2(y, x, columns, rows, currentLobby);
                     if (currentChair == 'L' && neighbours == 0) {
                         change = true;
-                        StringBuilder builder = new StringBuilder(nextLobby);
-                        builder.setCharAt(x + y * columns, '#');
-                        nextLobby = builder.toString();
+                        nextLobby.setCharAt(x + y * columns, '#');
                     } else if (currentChair == '#' && neighbours >= 5) {
                         change = true;
-                        StringBuilder builder = new StringBuilder(nextLobby);
-                        builder.setCharAt(x + y * columns, 'L');
-                        nextLobby = builder.toString();
+                        nextLobby.setCharAt(x + y * columns, 'L');
                     }
                 }
             }
-            currentLobby = nextLobby;
+            currentLobby = nextLobby.toString();
         } while (change);
 
         return "" + Arrays.stream(currentLobby.split("")).filter(s -> s.equals("#")).count();
