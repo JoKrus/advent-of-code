@@ -10,13 +10,13 @@ This project uses
 * External Java libraries through Maven (see pom.xml)
 
 ## Usage
-This project is not meant to be built to a jar and usually just executed from
+This project is not meant to be built to a jar and is usually just executed from
 within the IDE of choice. That is IntelliJ in my case, but it also should work
 in any other Java IDE that supports Maven 3 and Java 11.   
 
 ## How are challenges executed?
-App.main makes use of reflections to gather all classes in the package of App
-and subpackages that extend the abstract class Day. You can either start them
+`App.main()` makes use of reflections to gather all classes in the package of `App`
+and subpackages that extend the abstract class `Day`. You can either start them
 with timing if you want to show your friends that use python that Java is way
 cooler, or you can start it without timing if your C friend asks how slow your
 solution is.
