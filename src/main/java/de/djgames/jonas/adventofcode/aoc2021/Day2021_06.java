@@ -4,7 +4,6 @@ import de.djgames.jonas.adventofcode.Day;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Day2021_06 extends Day {
     @Override
@@ -21,7 +20,7 @@ public class Day2021_06 extends Day {
             lanternFishes = proceedDay(lanternFishes);
         }
 
-        long sum = lanternFishes.entrySet().stream().mapToLong(Map.Entry::getValue).sum();
+        long sum = lanternFishes.values().stream().mapToLong(l -> l).sum();
         return String.format("%d", sum);
     }
 
@@ -50,7 +49,7 @@ public class Day2021_06 extends Day {
             lanternFishes = proceedDay(lanternFishes);
         }
 
-        long sum = lanternFishes.entrySet().stream().mapToLong(Map.Entry::getValue).sum();
+        long sum = lanternFishes.values().stream().mapToLong(l -> l).sum();
         return String.format("%d", sum);
     }
 }
