@@ -6,7 +6,7 @@ to solve one.
 ## Prerequisites
 This project uses
 * Maven 3
-* Java 11
+* Java 17
 * External Java libraries through Maven (see pom.xml)
 
 ## Usage
