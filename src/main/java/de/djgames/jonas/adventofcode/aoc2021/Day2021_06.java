@@ -25,11 +25,11 @@ public class Day2021_06 extends Day {
     }
 
     private HashMap<Integer, Long> proceedDay(HashMap<Integer, Long> lanternFishes) {
+        Long births = lanternFishes.getOrDefault(0, 0L);
         HashMap<Integer, Long> newLanternFishes = new HashMap<>();
         for (int i = 1; i <= 8; i++) {
             newLanternFishes.put(i - 1, lanternFishes.getOrDefault(i, 0L));
         }
-        Long births = lanternFishes.getOrDefault(0, 0L);
         newLanternFishes.put(6, newLanternFishes.getOrDefault(6, 0L) + births);
         newLanternFishes.put(8, births);
         return newLanternFishes;
