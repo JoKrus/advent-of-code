@@ -17,6 +17,7 @@ public class App {
         TreeSet<Class<? extends Day>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
         challenges.addAll(reflections.getSubTypesOf(Day.class));
 
+        runAllTime(challenges);
         runSingleTime(Day2021_07.class);
     }
 
