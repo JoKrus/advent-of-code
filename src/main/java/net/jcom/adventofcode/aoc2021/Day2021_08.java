@@ -18,7 +18,7 @@ public class Day2021_08 extends Day {
 
     @Override
     public String part2Logic() {
-        return "%d".formatted(Arrays.stream(input.split("\n")).map(s -> new Wire(s)).mapToInt(Wire::getOutput).sum());
+        return "%d".formatted(Arrays.stream(input.split("\n")).map(Wire::new).mapToInt(Wire::getOutput).sum());
     }
 
     public static final class Wire {
@@ -49,6 +49,25 @@ public class Day2021_08 extends Day {
             Map<String, Long> occurences = Arrays.stream(split[0].split(""))
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
+            Map<String, String> wireToSegment = createWireToSegmentMap(displaysOne, displaysFour, occurences);
+
+            split[1] = split[1].trim();
+            int[] outputAsArray = Arrays.stream(split[1].split(" ")).map(s -> {
+                String[] split1 = s.split("");
+                for (int i = 0; i < split1.length; i++) {
+                    split1[i] = wireToSegment.get(split1[i]);
+                }
+                return Set.of(split1);
+            }).mapToInt(numberToSegment::indexOf).toArray();
+
+            for (int i = 0; i < outputAsArray.length; ++i) {
+                var a = Math.pow(10, i) * outputAsArray[outputAsArray.length - i - 1];
+                output += a;
+            }
+
+        }
+
+        private Map<String, String> createWireToSegmentMap(Set<String> displaysOne, Set<String> displaysFour, Map<String, Long> occurences) {
             HashMap<String, String> wireToSegment = new HashMap<>();
             wireToSegment.put(occurences.entrySet().stream()
                     .filter(stringLongEntry -> stringLongEntry.getValue() == 6)
@@ -80,20 +99,7 @@ public class Day2021_08 extends Day {
             wireToSegment.put(occuredSevenTimesAndInFour, "d");
             wireToSegment.put(occuredSevenTimesAndNotInFour, "g");
 
-            split[1] = split[1].trim();
-            int[] outputAsArray = Arrays.stream(split[1].split(" ")).map(s -> {
-                String[] split1 = s.split("");
-                for (int i = 0; i < split1.length; i++) {
-                    split1[i] = wireToSegment.get(split1[i]);
-                }
-                return Set.of(split1);
-            }).mapToInt(numberToSegment::indexOf).toArray();
-
-            for (int i = 0; i < outputAsArray.length; ++i) {
-                var a = Math.pow(10, i) * outputAsArray[outputAsArray.length - i - 1];
-                output += a;
-            }
-
+            return wireToSegment;
         }
 
         public int getOutput() {
