@@ -59,27 +59,43 @@ public class Day2021_12 extends Day {
             canGoFromTo.put(splits[1], lis2);
         });
 
-        ArrayList<String> myWays = new ArrayList<>();
+        List<String> bucket = new ArrayList<>();
         //need to change to bfs with a switch if this should be the important small cave
-        recursiveMode2("start", canGoFromTo, new ArrayList<>(List.of("start")), myWays);
+        for (String importantCave :
+                canGoFromTo.keySet().stream().filter(s -> Character.isLowerCase(s.charAt(0))).filter(s -> !s.equals(
+                        "start") && !s.equals("end")).toList()) {
+            recursiveMode2("start", importantCave, 0, canGoFromTo, new ArrayList<>(List.of("start")), bucket);
+        }
 
-        return "%d".formatted(myWays.size());
+        bucket = bucket.stream().distinct().toList();
+
+        return "%d".formatted(bucket.size());
     }
 
-    private void recursiveMode2(String currentNode, Map<String, List<String>> canGoFromTo, ArrayList<String> currentWay,
-                                ArrayList<String> bucket) {
+    private void recursiveMode2(String currentNode, String importantSmallCave, int importantVisits,
+                                Map<String, List<String>> canGoFromTo,
+                                ArrayList<String> currentWay,
+                                List<String> bucket) {
         if (currentNode.equals("end")) {
             bucket.add(String.join(",", currentWay));
             return;
         }
 
         for (var nextPossNode : canGoFromTo.getOrDefault(currentNode, new ArrayList<>())) {
-            if (Character.isLowerCase(nextPossNode.charAt(0)) && currentWay.contains(nextPossNode)) {
-                continue;
+            if (!nextPossNode.equals(importantSmallCave)) {
+                if (Character.isLowerCase(nextPossNode.charAt(0)) && currentWay.contains(nextPossNode)) {
+                    continue;
+                }
+                var newArr = new ArrayList<>(currentWay);
+                newArr.add(nextPossNode);
+                recursiveMode2(nextPossNode, importantSmallCave, importantVisits, canGoFromTo, newArr, bucket);
+            } else {
+                if (importantVisits < 2) {
+                    var newArr = new ArrayList<>(currentWay);
+                    newArr.add(nextPossNode);
+                    recursiveMode2(nextPossNode, importantSmallCave, importantVisits + 1, canGoFromTo, newArr, bucket);
+                }
             }
-            var newArr = new ArrayList<>(currentWay);
-            newArr.add(nextPossNode);
-            recursiveMode2(nextPossNode, canGoFromTo, newArr, bucket);
         }
     }
 }
