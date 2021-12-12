@@ -60,7 +60,6 @@ public class Day2021_12 extends Day {
         });
 
         List<String> bucket = new ArrayList<>();
-        //need to change to bfs with a switch if this should be the important small cave
         for (String importantCave :
                 canGoFromTo.keySet().stream().filter(s -> Character.isLowerCase(s.charAt(0))).filter(s -> !s.equals(
                         "start") && !s.equals("end")).toList()) {
