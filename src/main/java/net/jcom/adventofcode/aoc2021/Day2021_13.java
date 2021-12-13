@@ -67,9 +67,9 @@ public class Day2021_13 extends Day {
 
         var foldInsts = Arrays.stream(foldInstr.split("\n")).map(s -> s.substring(11)).toList();
 
-        for (var strgbrjkh :
+        for (var instruction :
                 foldInsts) {
-            handleInstruction(strgbrjkh, points);
+            handleInstruction(instruction, points);
         }
 
         int maxX = 6 * 8;
