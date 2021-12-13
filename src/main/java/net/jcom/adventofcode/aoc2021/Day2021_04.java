@@ -42,7 +42,7 @@ public class Day2021_04 extends Day {
             }
         }
 
-        var result = winner.getScore() * lastNumber;
+        var result = (winner != null ? winner.getScore() : 0) * lastNumber;
 
         return String.format("%d", result);
     }
@@ -66,8 +66,8 @@ public class Day2021_04 extends Day {
         var drawInt = Arrays.stream(drawOrder.split(",")).mapToInt(Integer::parseInt).toArray();
 
         int lastNumber = -1;
-        for (int i = 0; i < drawInt.length; i++) {
-            lastNumber = drawInt[i];
+        for (int j : drawInt) {
+            lastNumber = j;
             for (var board : boards) {
                 board.addNumber(lastNumber);
             }
@@ -77,8 +77,7 @@ public class Day2021_04 extends Day {
             boards.removeIf(Board::checkWin);
         }
 
-        Board loser = null;
-        loser = boards.get(0);
+        Board loser = boards.get(0);
 
         var result = loser.getScore() * lastNumber;
 
@@ -88,8 +87,8 @@ public class Day2021_04 extends Day {
     // 19 17 62 78 27 61 13 30 75 25 14 66 72 37 79 49 91 97  0 23 12 52 41 92 18
 
     public static class Board {
-        private HashBiMap<Integer, Point> locationMap;
-        private HashSet<Integer> isCheckedMap;
+        private final HashBiMap<Integer, Point> locationMap;
+        private final HashSet<Integer> isCheckedMap;
 
         private static final int WIDTH_NUM = 3;
         private static final int WIDTH = 5;

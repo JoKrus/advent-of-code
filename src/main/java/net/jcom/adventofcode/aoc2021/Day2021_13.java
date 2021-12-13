@@ -21,9 +21,9 @@ public class Day2021_13 extends Day {
             return new Point(Integer.parseInt(split1[0]), Integer.parseInt(split1[1]));
         }).forEach(points::add);
 
-        var foldInsts = Arrays.stream(foldInstr.split("\n")).map(s -> s.substring(11)).toList();
+        var foldInstructions = Arrays.stream(foldInstr.split("\n")).map(s -> s.substring(11)).toList();
 
-        handleInstruction(foldInsts.get(0), points);
+        handleInstruction(foldInstructions.get(0), points);
 
         return "%d".formatted(points.size());
     }
@@ -65,10 +65,10 @@ public class Day2021_13 extends Day {
             return new Point(Integer.parseInt(split1[0]), Integer.parseInt(split1[1]));
         }).forEach(points::add);
 
-        var foldInsts = Arrays.stream(foldInstr.split("\n")).map(s -> s.substring(11)).toList();
+        var foldInstructions = Arrays.stream(foldInstr.split("\n")).map(s -> s.substring(11)).toList();
 
         for (var instruction :
-                foldInsts) {
+                foldInstructions) {
             handleInstruction(instruction, points);
         }
 

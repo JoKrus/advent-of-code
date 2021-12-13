@@ -10,7 +10,6 @@ public class Day2021_07 extends Day {
         var inputInt = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).sorted().toArray();
 
         int lowestFuel = Integer.MAX_VALUE;
-        int lowestFuelAt = -1;
         for (int alignCoordinate = inputInt[0]; alignCoordinate < inputInt[inputInt.length - 1]; ++alignCoordinate) {
             int fuel = 0;
             for (int num :
@@ -19,9 +18,7 @@ public class Day2021_07 extends Day {
             }
             if (fuel < lowestFuel) {
                 lowestFuel = fuel;
-                lowestFuelAt = alignCoordinate;
             }
-
         }
 
         return "%d".formatted(lowestFuel);
@@ -32,7 +29,6 @@ public class Day2021_07 extends Day {
         var inputInt = Arrays.stream(input.split(",")).mapToInt(Integer::parseInt).sorted().toArray();
 
         int lowestFuel = Integer.MAX_VALUE;
-        int lowestFuelAt = -1;
         for (int alignCoordinate = inputInt[0]; alignCoordinate < inputInt[inputInt.length - 1]; ++alignCoordinate) {
             int fuel = 0;
             for (int num :
@@ -42,9 +38,7 @@ public class Day2021_07 extends Day {
             }
             if (fuel < lowestFuel) {
                 lowestFuel = fuel;
-                lowestFuelAt = alignCoordinate;
             }
-
         }
 
         return "%d".formatted(lowestFuel);

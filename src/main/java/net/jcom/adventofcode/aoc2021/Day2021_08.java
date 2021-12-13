@@ -46,10 +46,10 @@ public class Day2021_08 extends Day {
             Set<String> displaysFour =
                     Arrays.stream(split[0].split(" ")).filter(s -> s.length() == 4).flatMap(s -> Arrays.stream(s.split(""))).collect(Collectors.toSet());
 
-            Map<String, Long> occurences = Arrays.stream(split[0].split(""))
+            Map<String, Long> occurrences = Arrays.stream(split[0].split(""))
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-            Map<String, String> wireToSegment = createWireToSegmentMap(displaysOne, displaysFour, occurences);
+            Map<String, String> wireToSegment = createWireToSegmentMap(displaysOne, displaysFour, occurrences);
 
             split[1] = split[1].trim();
             int[] outputAsArray = Arrays.stream(split[1].split(" ")).map(s -> {
@@ -67,37 +67,37 @@ public class Day2021_08 extends Day {
 
         }
 
-        private Map<String, String> createWireToSegmentMap(Set<String> displaysOne, Set<String> displaysFour, Map<String, Long> occurences) {
+        private Map<String, String> createWireToSegmentMap(Set<String> displaysOne, Set<String> displaysFour, Map<String, Long> occurrences) {
             HashMap<String, String> wireToSegment = new HashMap<>();
-            wireToSegment.put(occurences.entrySet().stream()
+            wireToSegment.put(occurrences.entrySet().stream()
                     .filter(stringLongEntry -> stringLongEntry.getValue() == 6)
                     .map(Map.Entry::getKey).findFirst().get(), "b");
-            wireToSegment.put(occurences.entrySet().stream()
+            wireToSegment.put(occurrences.entrySet().stream()
                     .filter(stringLongEntry -> stringLongEntry.getValue() == 4)
                     .map(Map.Entry::getKey).findFirst().get(), "e");
-            wireToSegment.put(occurences.entrySet().stream()
+            wireToSegment.put(occurrences.entrySet().stream()
                     .filter(stringLongEntry -> stringLongEntry.getValue() == 9)
                     .map(Map.Entry::getKey).findFirst().get(), "f");
 
-            String occuredEightTimesAndInOne = occurences.entrySet().stream()
+            String occurredEightTimesAndInOne = occurrences.entrySet().stream()
                     .filter(stringLongEntry -> stringLongEntry.getValue() == 8)
                     .map(Map.Entry::getKey).filter(displaysOne::contains).findFirst().get();
 
-            String occuredEightTimesAndNotInOne = occurences.entrySet().stream()
+            String occurredEightTimesAndNotInOne = occurrences.entrySet().stream()
                     .filter(stringLongEntry -> stringLongEntry.getValue() == 8)
                     .map(Map.Entry::getKey).filter(s -> !displaysOne.contains(s)).findFirst().get();
-            wireToSegment.put(occuredEightTimesAndInOne, "c");
-            wireToSegment.put(occuredEightTimesAndNotInOne, "a");
+            wireToSegment.put(occurredEightTimesAndInOne, "c");
+            wireToSegment.put(occurredEightTimesAndNotInOne, "a");
 
-            String occuredSevenTimesAndInFour = occurences.entrySet().stream()
+            String occurredSevenTimesAndInFour = occurrences.entrySet().stream()
                     .filter(stringLongEntry -> stringLongEntry.getValue() == 7)
                     .map(Map.Entry::getKey).filter(displaysFour::contains).findFirst().get();
 
-            String occuredSevenTimesAndNotInFour = occurences.entrySet().stream()
+            String occurredSevenTimesAndNotInFour = occurrences.entrySet().stream()
                     .filter(stringLongEntry -> stringLongEntry.getValue() == 7)
                     .map(Map.Entry::getKey).filter(s -> !displaysFour.contains(s)).findFirst().get();
-            wireToSegment.put(occuredSevenTimesAndInFour, "d");
-            wireToSegment.put(occuredSevenTimesAndNotInFour, "g");
+            wireToSegment.put(occurredSevenTimesAndInFour, "d");
+            wireToSegment.put(occurredSevenTimesAndNotInFour, "g");
 
             return wireToSegment;
         }

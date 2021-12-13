@@ -15,15 +15,9 @@ public class Day2021_02 extends Day {
             var split = s.split(" ");
             var x = Long.parseLong(split[1]);
             switch (split[0]) {
-                case "forward":
-                    horizontal.addAndGet(x);
-                    break;
-                case "down":
-                    depth.addAndGet(x);
-                    break;
-                case "up":
-                    depth.addAndGet(-x);
-                    break;
+                case "forward" -> horizontal.addAndGet(x);
+                case "down" -> depth.addAndGet(x);
+                case "up" -> depth.addAndGet(-x);
             }
         });
 
@@ -40,16 +34,12 @@ public class Day2021_02 extends Day {
             var split = s.split(" ");
             var x = Long.parseLong(split[1]);
             switch (split[0]) {
-                case "forward":
+                case "forward" -> {
                     horizontal.addAndGet(x);
                     depth.addAndGet(aim.get() * x);
-                    break;
-                case "down":
-                    aim.addAndGet(x);
-                    break;
-                case "up":
-                    aim.addAndGet(-x);
-                    break;
+                }
+                case "down" -> aim.addAndGet(x);
+                case "up" -> aim.addAndGet(-x);
             }
         });
 

@@ -57,7 +57,7 @@ public class Day2021_10 extends Day {
     @Override
     public String part2Logic() {
         var split = Arrays.stream(input.split("\n")).toList();
-        //only incompleted ones
+        //only uncompleted ones
         split = new ArrayList<>(split);
         split.removeIf(s -> checkCorruptedChunks(s) != 0);
 

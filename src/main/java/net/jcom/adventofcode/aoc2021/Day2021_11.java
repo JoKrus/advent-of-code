@@ -64,7 +64,7 @@ public class Day2021_11 extends Day {
         }
     }
 
-    private String mapToString(Map<Point, Integer> energy, int min, int max) {
+    public String mapToString(Map<Point, Integer> energy, int min, int max) {
         StringBuilder sb = new StringBuilder();
         for (int i = min; i <= max; i++) {
             for (int j = min; j <= max; j++) {

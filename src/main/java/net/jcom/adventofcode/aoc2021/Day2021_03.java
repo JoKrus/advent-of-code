@@ -54,10 +54,10 @@ public class Day2021_03 extends Day {
         int i = 0;
         while (splitOxy.size() > 1) {
             int finalI = i;
-            String firstVals =
+            String firstValues =
                     splitOxy.stream().map(s -> String.format("%s", s.charAt(finalI))).collect(Collectors.joining());
-            int ones = StringUtils.countMatches(firstVals, "1");
-            int zeroes = StringUtils.countMatches(firstVals, "0");
+            int ones = StringUtils.countMatches(firstValues, "1");
+            int zeroes = StringUtils.countMatches(firstValues, "0");
 
             char toKeep = ones >= zeroes ? '0' : '1';
 
@@ -69,10 +69,10 @@ public class Day2021_03 extends Day {
         i = 0;
         while (splitCo2.size() > 1) {
             int finalI = i;
-            String firstVals =
+            String firstValues =
                     splitCo2.stream().map(s -> String.format("%s", s.charAt(finalI))).collect(Collectors.joining());
-            int ones = StringUtils.countMatches(firstVals, "1");
-            int zeroes = StringUtils.countMatches(firstVals, "0");
+            int ones = StringUtils.countMatches(firstValues, "1");
+            int zeroes = StringUtils.countMatches(firstValues, "0");
 
             char toKeep = ones < zeroes ? '0' : '1';
 

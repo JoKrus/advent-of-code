@@ -16,9 +16,9 @@ public class Day2021_05 extends Day {
         List<Vent> straightVents = Arrays.stream(input.split("\n")).map(s -> {
             var coordSplit = Arrays.stream(s.split("->")).map(String::trim)
                     .map(s1 -> Arrays.stream(s1.split(",")).mapToInt(Integer::parseInt).toArray())
-                    .map(ints -> new Point(ints[0], ints[1])).collect(Collectors.toList());
+                    .map(ints -> new Point(ints[0], ints[1])).toList();
             return new Vent(coordSplit.get(0), coordSplit.get(1));
-        }).filter(Vent::isStraight).collect(Collectors.toList());
+        }).filter(Vent::isStraight).toList();
 
         Map<Point, Long> collect = straightVents.stream().flatMap(vent -> vent.getPointsOfPipes().stream()).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
@@ -32,9 +32,9 @@ public class Day2021_05 extends Day {
         List<Vent> straightVents = Arrays.stream(input.split("\n")).map(s -> {
             var coordSplit = Arrays.stream(s.split("->")).map(String::trim)
                     .map(s1 -> Arrays.stream(s1.split(",")).mapToInt(Integer::parseInt).toArray())
-                    .map(ints -> new Point(ints[0], ints[1])).collect(Collectors.toList());
+                    .map(ints -> new Point(ints[0], ints[1])).toList();
             return new Vent(coordSplit.get(0), coordSplit.get(1));
-        }).collect(Collectors.toList());
+        }).toList();
 
         Map<Point, Long> collect = straightVents.stream().flatMap(vent -> vent.getPointsOfPipes().stream()).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
@@ -43,15 +43,7 @@ public class Day2021_05 extends Day {
         return String.format("%d", count);
     }
 
-    public static class Vent {
-        private Point from;
-        private Point to;
-
-        public Vent(Point from, Point to) {
-            this.from = from;
-            this.to = to;
-        }
-
+    public record Vent(Point from, Point to) {
         public boolean isStraight() {
             return from.x == to.x || from.y == to.y;
         }
