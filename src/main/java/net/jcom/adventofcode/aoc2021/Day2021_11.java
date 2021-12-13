@@ -10,8 +10,6 @@ public class Day2021_11 extends Day {
     @Override
     public String part1Logic() {
         String[] split = input.split("\n");
-        final int MAX = 9;
-        final int MIN = 0;
 
         Map<Point, Integer> energy = new HashMap<>();
         for (int i = 0; i < split.length; i++) {
@@ -29,7 +27,6 @@ public class Day2021_11 extends Day {
             //increase all by 1
             Map<Point, Integer> energyNext = new HashMap<>(energy);
             energyNext.entrySet().forEach(pointIntegerEntry -> pointIntegerEntry.setValue(pointIntegerEntry.getValue() + 1));
-
 
             Set<Point> alreadyFlashed = new HashSet<>();
             Set<Point> flashedThisCheck = new HashSet<>();
@@ -81,8 +78,6 @@ public class Day2021_11 extends Day {
     @Override
     public String part2Logic() {
         String[] split = input.split("\n");
-        final int MAX = 9;
-        final int MIN = 0;
 
         Map<Point, Integer> energy = new HashMap<>();
         for (int i = 0; i < split.length; i++) {
@@ -99,7 +94,6 @@ public class Day2021_11 extends Day {
             //increase all by 1
             Map<Point, Integer> energyNext = new HashMap<>(energy);
             energyNext.entrySet().forEach(pointIntegerEntry -> pointIntegerEntry.setValue(pointIntegerEntry.getValue() + 1));
-
 
             Set<Point> alreadyFlashed = new HashSet<>();
             Set<Point> flashedThisCheck = new HashSet<>();
