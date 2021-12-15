@@ -10,10 +10,7 @@ import java.util.stream.Collectors;
 
 public class Sandbox {
     public static void main(String[] args) {
-        String input = new BufferedReader(new InputStreamReader(
-                Objects.requireNonNull(Thread.currentThread().getContextClassLoader().
-                        getResourceAsStream(getFileNameOfInput(7, 2021))))).
-                lines().collect(Collectors.joining("\n"));
+        String input = getString(getFileNameOfInput(7, 2021));
         Opcoder op = new Opcoder(input);
         op.runOpcode();
         while (!op.getOutput().isEmpty()) {
@@ -21,10 +18,22 @@ public class Sandbox {
         }
     }
 
+    public static String getString(String filename) {
+        String input = new BufferedReader(new InputStreamReader(
+                Objects.requireNonNull(Thread.currentThread().getContextClassLoader().
+                        getResourceAsStream(filename)))).
+                lines().collect(Collectors.joining("\n"));
+        return input;
+    }
+
     public static final String getFileNameOfInput(int day, int year) {
+        return getFileNameOfInput(day, year, "");
+    }
+
+    public static final String getFileNameOfInput(int day, int year, String potentialSuffix) {
         String suffix = ".txt";
         String className = "Day%4d_%02d".formatted(year, day);
         String yearPackageName = "aoc%04d".formatted(year);
-        return yearPackageName + File.separator + className + suffix;
+        return yearPackageName + File.separator + className + potentialSuffix + suffix;
     }
 }

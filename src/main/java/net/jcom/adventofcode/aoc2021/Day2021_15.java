@@ -10,6 +10,14 @@ import java.util.*;
 public class Day2021_15 extends Day {
     @Override
     public String part1Logic() {
+        int[][] riskLevel = parseInput(this.input);
+
+        var risk = getRiskLevel(0, 0, riskLevel.length - 1, riskLevel.length - 1, riskLevel);
+
+        return "%d".formatted(risk);
+    }
+
+    private int[][] parseInput(String input) {
         String[] split = input.split("\n");
         int[][] riskLevel = new int[split.length][];
         for (int i = 0; i < split.length; i++) {
@@ -21,10 +29,7 @@ public class Day2021_15 extends Day {
                 riskLevel[i][j] = Integer.parseInt(s1);
             }
         }
-
-        var risk = getRiskLevel(0, 0, riskLevel.length - 1, riskLevel.length - 1, riskLevel);
-
-        return "%d".formatted(risk);
+        return riskLevel;
     }
 
     private long getRiskLevel(int startX, int startY, int targetX, int targetY, int[][] riskLevels) {
@@ -33,7 +38,7 @@ public class Day2021_15 extends Day {
 
         Map<Point, Pair<Point, Long>> shortestDist = new HashMap<>();
         Set<Point> alreadyChecked = new HashSet<>();
-        Queue<Pair<Point, Long>> queue = new ArrayDeque<>();
+        Queue<Pair<Point, Long>> queue = new PriorityQueue<>(Comparator.comparingLong(Pair::getRight));
         queue.add(Pair.of(start, 0L));
         while (!queue.isEmpty()) {
             var pointPair = queue.poll();
@@ -117,17 +122,7 @@ public class Day2021_15 extends Day {
             superInput = concatLines(superInput, cols[i]);
         }
 
-        String[] split = superInput.split("\n");
-        int[][] riskLevel = new int[split.length][];
-        for (int i = 0; i < riskLevel.length; i++) {
-            String s = split[i];
-            String[] split1 = s.split("");
-            riskLevel[i] = new int[split1.length];
-            for (int j = 0; j < riskLevel[i].length; j++) {
-                String s1 = split1[j];
-                riskLevel[i][j] = Integer.parseInt(s1);
-            }
-        }
+        int[][] riskLevel = parseInput(superInput);
 
         var risk = getRiskLevel(0, 0, riskLevel.length - 1, riskLevel.length - 1, riskLevel);
 
