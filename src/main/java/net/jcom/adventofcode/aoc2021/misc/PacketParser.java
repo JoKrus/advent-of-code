@@ -2,21 +2,21 @@ package net.jcom.adventofcode.aoc2021.misc;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
+import java.util.stream.LongStream;
 
 public class PacketParser {
     private final String input;
     private final ArrayList<Integer> versionNumbers;
-    private final ArrayList<Long> valueList;
     private Mode currentMode;
+    private final HashMap<Integer, Operation> opertationMap;
     private int index;
     private final Stack<Pair<Integer, LengthMode>> currentLengthMode;
     private final Stack<Integer> currentLengthModeValue;
     private final HashMap<Integer, Integer> modeIndex;
     private final HashMap<LengthMode, List<Integer>> modeIndexMap;
+    private final HashMap<Integer, List<Long>> childrenValues;
+    private Operation currentOperation;
 
     private int id = 0;
 
@@ -25,11 +25,14 @@ public class PacketParser {
         this.versionNumbers = new ArrayList<>();
         currentMode = Mode.VERSION;
         index = 0;
-        valueList = new ArrayList<>();
         currentLengthMode = new Stack<>();
         currentLengthModeValue = new Stack<>();
         modeIndex = new HashMap<>();
         modeIndexMap = new HashMap<>();
+        opertationMap = new HashMap<>();
+        childrenValues = new HashMap<>();
+
+        currentOperation = Operation.SUM;
 
         var myId = getId();
         this.currentLengthMode.push(Pair.of(myId, LengthMode.TOTAL_AMOUNT));
@@ -51,8 +54,14 @@ public class PacketParser {
                 case TYPE -> {
                     String thisType = input.substring(index, index + 3);
                     int typeNum = Integer.parseInt(thisType, 2);
+
+                    Operation op = Operation.findByValue(typeNum);
+                    currentOperation = op;
+
                     if (typeNum == 4) {
                         currentMode = Mode.LITERAL;
+                        int myId = getId();
+                        opertationMap.put(myId, currentOperation);
                     } else {
                         //TODO set current operator
                         currentMode = Mode.LENGTH_TYPE;
@@ -63,6 +72,7 @@ public class PacketParser {
                 case LENGTH_TYPE -> {
                     String thisType = input.substring(index, index + 1);
                     int myId = getId();
+                    opertationMap.put(myId, currentOperation);
                     if (thisType.equals("0")) {
                         this.currentLengthMode.push(Pair.of(myId, LengthMode.TOTAL_LENGTH));
                         registerId(myId, LengthMode.TOTAL_LENGTH);
@@ -93,18 +103,25 @@ public class PacketParser {
                         increaseAll(LengthMode.TOTAL_LENGTH, 5);
                     } while (prefix.equals("1"));
                     long decimal = Long.parseLong(value.toString(), 2);
-                    valueList.add(decimal);
+                    addValue(currentLengthMode.peek().getLeft(), decimal);
                     //Finished packet
-
                     if (currentLengthMode.peek().getRight() == LengthMode.TOTAL_AMOUNT) {
                         modeIndex.merge(currentLengthMode.peek().getLeft(), 1, Integer::sum);
                     }
 
                     while (!currentLengthModeValue.empty() && currentLengthModeValue.peek().equals(modeIndex.get(currentLengthMode.peek().getLeft()))) {
+                        Operation opOfPacket = opertationMap.get(currentLengthMode.peek().getLeft());
+                        List<Long> values = childrenValues.get(currentLengthMode.peek().getLeft());
+                        long result = performOperation(opOfPacket, values);
+
                         modeIndex.remove(currentLengthMode.peek().getLeft());
                         unregisterId(currentLengthMode.peek().getLeft(), currentLengthMode.peek().getRight());
                         currentLengthModeValue.pop();
                         currentLengthMode.pop();
+
+                        if (!currentLengthMode.empty()) {
+                            addValue(currentLengthMode.peek().getLeft(), result);
+                        }
 
                         if (!currentLengthMode.empty() && currentLengthMode.peek().getRight() == LengthMode.TOTAL_AMOUNT) {
                             modeIndex.merge(currentLengthMode.peek().getLeft(), 1, Integer::sum);
@@ -115,6 +132,43 @@ public class PacketParser {
                 }
             }
         }
+    }
+
+    private long performOperation(Operation opOfPacket, List<Long> values) {
+        if (opOfPacket == null) {
+            return 0;
+        }
+
+        LongStream longStream = longStream(values);
+        return switch (opOfPacket) {
+            case SUM -> longStream.sum();
+            case PRODUCT -> longStream.reduce(1, Math::multiplyExact);
+            case MINIMUM -> longStream.min().getAsLong();
+            case MAXIMUM -> longStream.max().getAsLong();
+            case LITERAL -> longStream.findFirst().getAsLong();
+            case GREATER_THAN -> {
+                boolean retBool = values.get(0) > values.get(1);
+                yield retBool ? 1 : 0;
+            }
+            case LESS_THAN -> {
+                boolean retBool = values.get(0) < values.get(1);
+                yield retBool ? 1 : 0;
+            }
+            case EQUAL_TO -> {
+                boolean retBool = values.get(0).equals(values.get(1));
+                yield retBool ? 1 : 0;
+            }
+        };
+    }
+
+    private LongStream longStream(List<Long> values) {
+        return values.stream().mapToLong(Long::longValue);
+    }
+
+    private void addValue(int id, long value) {
+        var newList = childrenValues.getOrDefault(id, new ArrayList<>());
+        newList.add(value);
+        childrenValues.put(id, newList);
     }
 
     private void registerId(int id, LengthMode mode) {
@@ -150,6 +204,10 @@ public class PacketParser {
         return this.versionNumbers.stream().mapToInt(Integer::intValue).sum();
     }
 
+    public long getResult() {
+        return this.childrenValues.get(0).get(0);
+    }
+
     public enum Mode {
         VERSION, TYPE, LENGTH_TYPE, LITERAL, HALT
     }
@@ -161,6 +219,20 @@ public class PacketParser {
 
         LengthMode(int i) {
             this.val = i;
+        }
+    }
+
+    public enum Operation {
+        SUM(0), PRODUCT(1), MINIMUM(2), MAXIMUM(3), LITERAL(4), GREATER_THAN(5), LESS_THAN(6), EQUAL_TO(7);
+
+        public final int val;
+
+        Operation(int i) {
+            this.val = i;
+        }
+
+        public static Operation findByValue(final int value) {
+            return Arrays.stream(values()).filter(value1 -> value1.val == value).findFirst().orElse(null);
         }
     }
 }
