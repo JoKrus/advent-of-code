@@ -37,6 +37,10 @@ public class Day2021_17 extends Day {
                 Point velPair = new Point(initXVel, initYVel);
                 var init = Triple.of(new Point(0, 0), initXVel, initYVel);
                 while (!(init.getLeft().y < minY && init.getRight() < 0)) {
+                    if (((minX > init.getLeft().x && init.getMiddle() <= 0) ||
+                            (maxX < init.getLeft().x && init.getMiddle() >= 0))) {
+                        break;
+                    }
                     init = iterate(init);
                     highestPoint.put(velPair, Math.max(init.getLeft().y,
                             highestPoint.getOrDefault(velPair, 0)));
