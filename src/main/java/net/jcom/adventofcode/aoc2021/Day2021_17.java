@@ -16,7 +16,7 @@ public class Day2021_17 extends Day {
     @Override
     public String part1Logic() {
         if (validTrajectory.isEmpty()) {
-            performIteration(-92, 400);
+            performIteration(-350, 350);
         }
         return "%d" .formatted(highestPoint.entrySet().stream().filter(pointIntegerEntry -> validTrajectory.contains(pointIntegerEntry.getKey()))
                 .map(Map.Entry::getValue).mapToInt(Integer::intValue).max().getAsInt());
@@ -33,7 +33,7 @@ public class Day2021_17 extends Day {
         HashMap<Point, Integer> highestPoint = new HashMap<>();
 
         for (int initXVel = minCheck; initXVel <= maxCheck; initXVel++) {
-            for (int initYVel = minCheck; initYVel <= maxCheck; initYVel++) {
+            for (int initYVel = minY; initYVel <= maxCheck; initYVel++) {
                 Point velPair = new Point(initXVel, initYVel);
                 var init = Triple.of(new Point(0, 0), initXVel, initYVel);
                 while (!(init.getLeft().y < minY && init.getRight() < 0)) {
