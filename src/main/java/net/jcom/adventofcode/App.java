@@ -1,7 +1,8 @@
 package net.jcom.adventofcode;
 
-import net.jcom.adventofcode.aoc2021.Day2021_18;
+import net.jcom.adventofcode.aoc2021.Day2021_20;
 import org.reflections.Reflections;
+import org.reflections.scanners.Scanners;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
@@ -14,10 +15,10 @@ public class App {
 
     public static void main(String[] args) {
         Reflections reflections = new Reflections(App.class.getPackageName());
-        TreeSet<Class<? extends Day>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
-        challenges.addAll(reflections.getSubTypesOf(Day.class));
+        TreeSet<Class<?>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
+        challenges.addAll(reflections.get(Scanners.SubTypes.of(Day.class).asClass()));
 
-        runSingleTime(Day2021_18.class);
+        runSingleTime(Day2021_20.class);
     }
 
     public static void runSinglePart(Class<? extends Day> dayClass, boolean part1) {
