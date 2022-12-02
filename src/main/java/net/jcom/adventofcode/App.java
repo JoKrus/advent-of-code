@@ -1,6 +1,6 @@
 package net.jcom.adventofcode;
 
-import net.jcom.adventofcode.aoc2022.Day2022_02;
+import net.jcom.adventofcode.aoc2022.Day2022_03;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
@@ -18,14 +18,15 @@ public class App {
         TreeSet<Class<?>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
         challenges.addAll(reflections.get(Scanners.SubTypes.of(Day.class).asClass()));
 
-        runSingleTime(Day2022_02.class);
+        runSingleTime(Day2022_03.class);
     }
 
     public static void runSinglePart(Class<? extends Day> dayClass, boolean part1) {
         try {
             Day day = dayClass.getConstructor().newInstance();
             System.out.println(part1 ? day.part1() : day.part2());
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
         }
     }
@@ -33,7 +34,8 @@ public class App {
     public static void runSingle(Class<? extends Day> dayClass) {
         try {
             System.out.println(dayClass.getConstructor().newInstance().execute());
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
         }
     }
@@ -61,7 +63,8 @@ public class App {
             String result = String.format("%s within %.3fms, %s within %.3fms", day1, (1. * part1End - part1Start) * 1e-6, day2,
                     (1. * part2End - part2Start) * 1e-6);
             System.out.println(answer.append(result));
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
             e.printStackTrace();
         }
     }
