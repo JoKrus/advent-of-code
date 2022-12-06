@@ -1,6 +1,6 @@
 package net.jcom.adventofcode;
 
-import net.jcom.adventofcode.aoc2022.Day2022_03;
+import net.jcom.adventofcode.aoc2022.Day2022_05;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
@@ -18,7 +18,7 @@ public class App {
         TreeSet<Class<?>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
         challenges.addAll(reflections.get(Scanners.SubTypes.of(Day.class).asClass()));
 
-        runSingleTime(Day2022_03.class);
+        runSingleTime(Day2022_05.class);
     }
 
     public static void runSinglePart(Class<? extends Day> dayClass, boolean part1) {
