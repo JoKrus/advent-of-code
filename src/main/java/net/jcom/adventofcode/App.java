@@ -2,7 +2,6 @@ package net.jcom.adventofcode;
 
 import net.jcom.adventofcode.aoc2022.Day2022_07;
 import org.reflections.Reflections;
-import org.reflections.scanners.Scanners;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
@@ -15,8 +14,8 @@ public class App {
 
     public static void main(String[] args) {
         Reflections reflections = new Reflections(App.class.getPackageName());
-        TreeSet<Class<?>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
-        challenges.addAll(reflections.get(Scanners.SubTypes.of(Day.class).asClass()));
+        TreeSet<Class<? extends Day>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
+        challenges.addAll(reflections.getSubTypesOf(Day.class));
 
         runSingleTime(Day2022_07.class);
     }
