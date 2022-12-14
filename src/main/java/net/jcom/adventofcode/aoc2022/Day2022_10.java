@@ -45,6 +45,44 @@ public class Day2022_10 extends Day {
 
     @Override
     public String part2Logic() {
-        return null;
+        List<String> strings = new ArrayList<>(Arrays.stream(input.split("\n")).toList());
+
+        for (int i = strings.size() - 1; i >= 0; --i) {
+            var sOrig = strings.get(i);
+            var s = sOrig.split(" ")[0];
+            if (s.equals("addx")) {
+                strings.set(i, "noop");
+                strings.add(i + 1, "add " + sOrig.split(" ")[1]);
+            }
+        }
+
+        StringBuilder stringBuilder = new StringBuilder("\n");
+
+        int x = 1;
+
+        var cycles = Arrays.stream(new int[]{40, 80, 120, 160, 200}).boxed().toList();
+
+        for (int i = 1; i <= strings.size(); ++i) {
+            var myS = " ";
+
+            if (Math.abs(x - (i - 1) % 40) <= 1) {
+                myS = "#";
+            }
+
+            var sOrig = strings.get(i - 1);
+            var s = sOrig.split(" ")[0];
+
+            if (s.equals("add")) {
+                x += Integer.parseInt(sOrig.split(" ")[1]);
+            }
+
+
+            stringBuilder.append(myS);
+            if (cycles.contains(i)) {
+                stringBuilder.append("\n");
+            }
+        }
+
+        return stringBuilder.toString();
     }
 }
