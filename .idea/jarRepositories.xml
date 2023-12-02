@@ -3,6 +3,11 @@
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
       <option name="id" value="github" />
+      <option name="name" value="GitHub Spacefighter Apache Maven Packages" />
+      <option name="url" value="https://maven.pkg.github.com/xandor98/Spacefighter" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
       <option name="name" value="GitHub OWNER Apache Maven Packages" />
       <option name="url" value="https://maven.pkg.github.com/jokrus/JComServer2" />
     </remote-repository>
