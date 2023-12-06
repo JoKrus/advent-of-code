@@ -1,6 +1,6 @@
 package net.jcom.adventofcode;
 
-import net.jcom.adventofcode.aoc2023.Day2023_02;
+import net.jcom.adventofcode.aoc2023.Day2023_06;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +17,7 @@ public class App {
         TreeSet<Class<? extends Day>> challenges = new TreeSet<>(Comparator.comparing(Class::getSimpleName));
         challenges.addAll(reflections.getSubTypesOf(Day.class));
 
-        runSingleTime(Day2023_02.class);
+        runSingleTime(Day2023_06.class);
     }
 
     public static void runSinglePart(Class<? extends Day> dayClass, boolean part1) {
